@@ -25,19 +25,32 @@ const windowWidth = Dimensions.get('window').width;
 
 export default function Home({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [walletContent, setWalletContent] = useState([]);
+  const [modifiedData, setModifiedData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const getWalletContent = async () => {
     try {
-      let url = 'https://api-generator.retool.com/jlEsLB/wallet_content';
-      let {data} = await axios.get(url);
-      console.log(data, '>>>>>>>>>>>>>>>');
-      let collection = JSON.parse(data[0].collection_json)
-      console.log(collection.id, 'jsdjkajdka');
-      // let jparse = JSON.parse(data)
-      // console.log(jparse[0].collection_json.id);
-      setWalletContent(data);
+      let urlWallet = 'https://api-generator.retool.com/jlEsLB/wallet_content';
+      let urlCollection = 'https://api-generator.retool.com/j3Iz08/collections';
+      let {data: wallets} = await axios.get(urlWallet);
+      let {data: collections} = await axios.get(urlCollection);
+      wallets.forEach(el => {
+        el.collection_json = JSON.parse(el.collection_json);
+      });
+
+      collections.forEach(el => {
+        el.owned_tokens = [];
+      });
+
+      collections.forEach(collection => {
+        wallets.forEach(wallet => {
+          if (collection.external_id === wallet.collection_json.external_id) {
+            collection.owned_tokens.push(wallet);
+          }
+        });
+      });
+      setModifiedData(collections);
+      console.log(modifiedData);
       setLoading(false);
     } catch (error) {
       console.log(error);
