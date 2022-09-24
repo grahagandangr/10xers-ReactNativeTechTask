@@ -9,8 +9,8 @@ export default function GeneralCollectionDetailCard() {
   return (
     <View
       style={[
-        tw`mx-auto bg-black -mt-10 mb-10 rounded-2xl shadow-lg shadow-white `,
-        {width: windowWidth * 0.9, height: windowHeight * 0.1},
+        tw`mx-auto bg-black mb-10 rounded-2xl shadow-lg shadow-white `,
+        {width: windowWidth * 0.9, height: windowHeight * 0.1, marginTop: -windowHeight * 0.1 / 2},
       ]}>
       <View style={tw`my-auto mx-10 flex flex-row justify-between`}>
         <View style={tw`justify-center items-center`}>

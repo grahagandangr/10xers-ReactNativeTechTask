@@ -36,7 +36,7 @@ export default function Detail() {
             style={[
               {
                 width: 100,
-                height: 105,
+                height: 100,
                 borderRadius: 15,
                 borderColor: '#e2e8f0',
                 borderWidth: 2,
@@ -52,7 +52,7 @@ export default function Detail() {
       <GeneralCollectionDetailCard />
       <Chart />
       <View
-        style={tw`mx-auto bg-white h-0.2 w-[90%] bg-opacity-50 mb-10`}></View>
+        style={tw`mx-auto bg-white h-0.2 w-[90%] bg-opacity-50 mb-5`}></View>
 
       <ScrollView showsVerticalScrollIndicator={false} style={tw`mx-auto`}>
         <View style={tw`flex flex-row flex-wrap`}>
