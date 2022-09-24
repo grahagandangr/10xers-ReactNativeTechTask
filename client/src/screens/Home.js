@@ -18,19 +18,22 @@ import {useFocusEffect} from '@react-navigation/native';
 import tw from 'twrnc';
 import Header from '../components/Header';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import HomeCard from '../components/HomeCard';
+import HomeCard from '../components/CollectionItemCard';
 
 const windowWidth = Dimensions.get('window').width;
 
 export default function Home({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getWalletContent = async () => {
     try {
       let url = 'https://api-generator.retool.com/jlEsLB/wallet_content';
       let {data} = await axios.get(url);
+      console.log(data, '>>>>>>>>>>>>>>>');
       setData(data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -47,16 +50,14 @@ export default function Home({navigation}) {
     <SafeAreaView style={styles.container}>
       <Header />
       <View style={tw`px-4 py-5`}>
-        <Text
-          onPress={() => {
-            navigation.navigate('Detail');
-          }}
-          style={tw`text-white text-5xl pb-2 font-bold`}>
+        <Text style={tw`text-slate-200 text-5xl pb-2 font-bold tracking-wider`}>
           Ready to
         </Text>
-        <Text style={tw`text-white text-5xl pb-2 font-bold`}>get started?</Text>
-        <Text style={tw`text-white text-xl font-bold`}>
-          Get unique NFT collection
+        <Text style={tw`text-slate-200 text-5xl pb-2 font-bold tracking-wider`}>
+          get started?
+        </Text>
+        <Text style={tw`text-slate-200 text-xl tracking-widest italic`}>
+          Get unique NFT collection here!
         </Text>
       </View>
       <ScrollView showsVerticalScrollIndicator={false} style={tw`mx-auto`}>

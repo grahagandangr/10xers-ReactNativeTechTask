@@ -14,9 +14,9 @@ export default function Header() {
         }}
         name="arrowleft"
         size={20}
-        color="white"
+        color="#e2e8f0"
       />
-      <Icon name="user" solid size={20} color="#fff" />
+      <Icon name="search" solid size={20} color="#e2e8f0" />
     </View>
   );
 }
