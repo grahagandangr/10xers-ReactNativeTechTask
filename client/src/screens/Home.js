@@ -19,28 +19,40 @@ import {useFocusEffect} from '@react-navigation/native';
 import tw from 'twrnc';
 import Header from '../components/Header';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import HomeCard from '../components/CollectionItemCard';
+import CollectionItemCard from '../components/CollectionItemCard';
 
 const windowWidth = Dimensions.get('window').width;
 
 export default function Home({navigation}) {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [walletContent, setWalletContent] = useState([]);
+  const [modifiedData, setModifiedData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const getWalletContent = async () => {
     try {
-      let url = 'https://api-generator.retool.com/jlEsLB/wallet_content';
-      let {data} = await axios.get(url);
-      console.log(data, '>>>>>>>>>>>>>>>');
-      let collection = JSON.parse(data[0].collection_json)
-      console.log(collection.id, 'jsdjkajdka');
-      // let jparse = JSON.parse(data)
-      // console.log(jparse[0].collection_json.id);
-      setWalletContent(data);
+      let urlWallet = 'https://api-generator.retool.com/jlEsLB/wallet_content';
+      let urlCollection = 'https://api-generator.retool.com/j3Iz08/collections';
+      let {data: wallets} = await axios.get(urlWallet);
+      let {data: collections} = await axios.get(urlCollection);
+      wallets.forEach(el => {
+        el.collection_json = JSON.parse(el.collection_json);
+      });
+
+      collections.forEach(el => {
+        el.owned_tokens = [];
+      });
+
+      collections.forEach(collection => {
+        wallets.forEach(wallet => {
+          if (collection.external_id === wallet.collection_json.external_id) {
+            collection.owned_tokens.push(wallet);
+          }
+        });
+      });
+      setModifiedData(collections);
       setLoading(false);
     } catch (error) {
       console.log(error);
+      ToastAndroid.show('Something error happened', ToastAndroid.SHORT);
     }
   };
 
@@ -78,13 +90,17 @@ export default function Home({navigation}) {
           Get unique NFT collection here!
         </Text>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} style={tw`mx-auto`}>
-        <HomeCard />
-        <HomeCard />
-        <HomeCard />
-        <HomeCard />
-        <HomeCard />
-      </ScrollView>
+      {modifiedData.length == 0 ? (
+        <Text style={tw`text-slate-200 text-xl tracking-widest italic`}>
+          There is no collection
+        </Text>
+      ) : (
+        <ScrollView showsVerticalScrollIndicator={false} style={tw`mx-auto`}>
+          {modifiedData.map(el => (
+            <CollectionItemCard key={el.id} data={el} />
+          ))}
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 }
