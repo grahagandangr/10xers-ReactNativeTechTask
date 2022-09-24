@@ -14,11 +14,16 @@ function MyStack() {
         name="Home"
         component={Home}
         options={{
-          title: 'Home',
           headerShown: false,
         }}
       />
-      <Stack.Screen name="Detail" component={Detail} />
+      <Stack.Screen
+        name="Detail"
+        component={Detail}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 }
