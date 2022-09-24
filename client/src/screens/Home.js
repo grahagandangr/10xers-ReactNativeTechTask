@@ -10,6 +10,7 @@ import {
   ScrollView,
   Image,
   ImageBackground,
+  ActivityIndicator,
 } from 'react-native';
 import {useCallback, useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -24,7 +25,7 @@ const windowWidth = Dimensions.get('window').width;
 
 export default function Home({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [data, setData] = useState([]);
+  const [walletContent, setWalletContent] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const getWalletContent = async () => {
@@ -32,7 +33,11 @@ export default function Home({navigation}) {
       let url = 'https://api-generator.retool.com/jlEsLB/wallet_content';
       let {data} = await axios.get(url);
       console.log(data, '>>>>>>>>>>>>>>>');
-      setData(data);
+      let collection = JSON.parse(data[0].collection_json)
+      console.log(collection.id, 'jsdjkajdka');
+      // let jparse = JSON.parse(data)
+      // console.log(jparse[0].collection_json.id);
+      setWalletContent(data);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -42,9 +47,22 @@ export default function Home({navigation}) {
   useFocusEffect(
     useCallback(() => {
       getWalletContent();
-      console.log(data, '<<<<<<<<<<<<<<<<<<<');
     }, []),
   );
+
+  if (loading) {
+    return (
+      <SafeAreaView
+        style={{
+          flex: 1,
+          backgroundColor: 'black',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <ActivityIndicator size="large" color="#e2e8f0" />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>

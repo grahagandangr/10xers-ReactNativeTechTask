@@ -1,4 +1,4 @@
-import {StyleSheet, View, Dimensions, Text} from 'react-native';
+import {StyleSheet, View, Dimensions, Text ,ToastAndroid} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import tw from 'twrnc';
 
@@ -51,6 +51,28 @@ export default function Chart() {
         withInnerLines={false}
         withOuterLines={false}
         withVerticalLabels={false}
+        onDataPointClick={({value, dataset, getColor}) => {
+          console.log(value);
+          console.log(dataset);
+          console.log(getColor(0.2));
+          ToastAndroid.show(String(value), ToastAndroid.SHORT);
+        }}
+        renderDotContent={({x, y, index}) => {
+          if (index == 19) {
+            return (
+              <Text key={index}
+                style={{
+                  color: 'white',
+                  position: 'absolute',
+                  top: y - 20,
+                  left: x - 10,
+                  fontSize: 12,
+                }}>
+                {index + 1 + ' Januari'}
+              </Text>
+            );
+          }
+        }}
         // withHorizontalLabels={false}
         chartConfig={{
           backgroundColor: '#000',
@@ -65,7 +87,6 @@ export default function Chart() {
         }}
         bezier
         style={{
-          
           borderRadius: 16,
         }}
       />
