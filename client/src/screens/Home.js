@@ -19,12 +19,11 @@ import {useFocusEffect} from '@react-navigation/native';
 import tw from 'twrnc';
 import Header from '../components/Header';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import HomeCard from '../components/CollectionItemCard';
+import CollectionItemCard from '../components/CollectionItemCard';
 
 const windowWidth = Dimensions.get('window').width;
 
 export default function Home({navigation}) {
-  const [modalVisible, setModalVisible] = useState(false);
   const [modifiedData, setModifiedData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -50,10 +49,10 @@ export default function Home({navigation}) {
         });
       });
       setModifiedData(collections);
-      console.log(modifiedData);
       setLoading(false);
     } catch (error) {
       console.log(error);
+      ToastAndroid.show('Something error happened', ToastAndroid.SHORT);
     }
   };
 
@@ -91,13 +90,17 @@ export default function Home({navigation}) {
           Get unique NFT collection here!
         </Text>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} style={tw`mx-auto`}>
-        <HomeCard />
-        <HomeCard />
-        <HomeCard />
-        <HomeCard />
-        <HomeCard />
-      </ScrollView>
+      {modifiedData.length == 0 ? (
+        <Text style={tw`text-slate-200 text-xl tracking-widest italic`}>
+          There is no collection
+        </Text>
+      ) : (
+        <ScrollView showsVerticalScrollIndicator={false} style={tw`mx-auto`}>
+          {modifiedData.map(el => (
+            <CollectionItemCard key={el.id} data={el} />
+          ))}
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 }

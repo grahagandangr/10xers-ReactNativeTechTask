@@ -10,7 +10,7 @@ import tw from 'twrnc';
 
 const windowWidth = Dimensions.get('window').width;
 
-export default function CollectionTokenCard() {
+export default function CollectionTokenCard({token}) {
   return (
     <View
       style={[
@@ -26,7 +26,7 @@ export default function CollectionTokenCard() {
         imageStyle={[{borderRadius: 17}, tw`shadow-lg`]}
         style={[styles.poster]}
         source={{
-          uri: 'https://lh3.googleusercontent.com/H-eyNE1MwL5ohL-tCfn_Xa1Sl9M9B4612tLYeUlQubzt4ewhr4huJIR5OLuyO3Z5PpJFSwdm7rq-TikAh7f5eUw338A2cy6HRH75=s120',
+          uri: token.image_url,
         }}>
         <View style={tw`flex flex-row justify-end`}>
           <View style={{marginTop: windowWidth * 0.375}}>
@@ -34,7 +34,7 @@ export default function CollectionTokenCard() {
               style={tw`bg-slate-200 bg-opacity-80 rounded-full shadow-lg mx-2 px-2 py-1 flex-row`}>
               <Icon name="gem" solid size={18} color="#000" />
               <Text style={tw`text-black font-extrabold my-auto px-1`}>
-                #12345
+                #{token.token_id}
               </Text>
             </View>
           </View>
