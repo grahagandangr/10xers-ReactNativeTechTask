@@ -34,6 +34,7 @@ export default function Detail() {
   const [filter, setFilter] = useState(7);
   const [loading, setLoading] = useState(true);
   const [loadingStats, setLoadingStats] = useState(true);
+  const [indexMaxFloorPrice, setIndexMaxFloorPrice] = useState(0);
 
   const getCollectionById = async () => {
     try {
@@ -71,12 +72,18 @@ export default function Detail() {
       let floorPriceForChart = data.map(el => +el.floor_price_eth);
       setDate(filteredDate);
       let filteredFloorPrice = floorPriceForChart.slice(0, filter);
+      let maxFloorPrice = Math.max(...filteredFloorPrice);
+      let maxFloorPriceIndex = 0;
+      filteredFloorPrice.forEach((el, idx) => {
+        if (el === maxFloorPrice) {
+          maxFloorPriceIndex = idx;
+        }
+      });
+
+      setIndexMaxFloorPrice(maxFloorPriceIndex);
       setFloorPrice(filteredFloorPrice);
-      console.log(filteredFloorPrice);
-      console.log(filteredDate);
       setLoadingStats(false);
     } catch (error) {
-      console.log('masuk');
       console.log(error);
       ToastAndroid.show('Something error happened', ToastAndroid.SHORT);
     }
@@ -197,7 +204,12 @@ export default function Detail() {
           )}
         </View>
       </View>
-      <Chart date={date} floorPrice={floorPrice} filter={filter} />
+      <Chart
+        date={date}
+        floorPrice={floorPrice}
+        filter={filter}
+        indexMaxFloorPrice={indexMaxFloorPrice}
+      />
       <View
         style={tw`mx-auto bg-white h-0.2 w-[90%] bg-opacity-50 mb-5`}></View>
       {modifiedData.owned_tokens.length == 0 ? (

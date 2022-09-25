@@ -109,17 +109,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black',
-  },
-  movieCard: {
-    flex: 1,
-    backgroundColor: 'white',
-    borderRadius: 30,
-  },
-  poster: {
-    backgroundColor: 'white',
-    width: windowWidth * 0.8,
-    height: windowWidth * 0.7,
-    borderRadius: 30,
-    flex: 1,
-  },
+  }
 });
