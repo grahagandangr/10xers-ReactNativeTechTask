@@ -1,1 +1,1 @@
-# 10xers-ReactNativeTechTask 
+# NFT-ReactNative
